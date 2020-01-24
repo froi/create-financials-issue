@@ -1,10 +1,17 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Create Issue'
+description: 'Simple action to create GitHub Issues'
+author: 'Froilán Irizarry Rivera'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  title:
+    description: 'Issue title'
+  description:
+    description: 'Issue description text'
+  labels:
+    description: 'Labels to apply once the issue is created, separated by commas.'
+  assignees:
+    description: 'List of assignees to this issue, separated by commas'
+  body:
+    description: 'Issue contents'
 runs:
   using: 'node12'
   main: 'dist/index.js'

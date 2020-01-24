@@ -4,14 +4,19 @@ author: 'Froilán Irizarry Rivera'
 inputs:
   title:
     description: 'Issue title'
+    required: true
   description:
     description: 'Issue description text'
+    required: false
   labels:
     description: 'Labels to apply once the issue is created, separated by commas.'
+    required: false
   assignees:
     description: 'List of assignees to this issue, separated by commas'
+    required: false
   body:
     description: 'Issue contents'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

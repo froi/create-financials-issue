@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import {IssuesCreateParamsDeprecatedAssignee} from '@octokit/rest';
+import {getClient, getRequestParams} from './utils';
 
 async function run(): Promise<void> {
   try {
@@ -14,4 +15,8 @@ async function run(): Promise<void> {
   }
 }
 
-run();
+if (!module.parent) {
+  run();
+}
+
+export {run};

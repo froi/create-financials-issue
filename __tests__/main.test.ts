@@ -1,27 +1,33 @@
-import {wait} from '../src/wait'
-import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
+jest.mock('@actions/core');
+jest.mock('@actions/github');
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
-})
+const core = require('@actions/core');
+const {GitHub, context} = require('@actions/github');
+import {run} from '../src/main';
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
-})
-
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execSync(`node ${ip}`, options).toString())
-})
+describe('main.ts tests', () => {
+  beforeEach(() => {
+    context.repo = {
+      owner: 'owner',
+      repo: 'repo'
+    };
+    process.env.GITHUB_TOKEN = 'NOT-A-TOKEN';
+    const github = {
+      issues: {
+        create: jest.fn().mockReturnValueOnce(1)
+      }
+    }
+    GitHub.mockImplementation(() => github);
+  });
+  test('test runs', async () => {
+    core.getInput = jest.fn()
+        .mockReturnValueOnce('Issue title')
+        .mockReturnValueOnce('assign1, assign2, assign3')
+        .mockReturnValueOnce('A larger string for the body of the issue.')
+        .mockReturnValueOnce('label1, label2, label3');
+    core.setOutput = jest.fn().mockReturnValueOnce(true);
+    process.env.GITHUB_TOKEN = 'NOT-A-TOKEN';
+    await run();
+    // TODO: make proper checks
+  });
+});

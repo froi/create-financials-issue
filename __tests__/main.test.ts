@@ -16,15 +16,16 @@ describe('main.ts tests', () => {
       issues: {
         create: jest.fn().mockReturnValueOnce(1)
       }
-    }
+    };
     GitHub.mockImplementation(() => github);
   });
   test('test runs', async () => {
-    core.getInput = jest.fn()
-        .mockReturnValueOnce('Issue title')
-        .mockReturnValueOnce('assign1, assign2, assign3')
-        .mockReturnValueOnce('A larger string for the body of the issue.')
-        .mockReturnValueOnce('label1, label2, label3');
+    core.getInput = jest
+      .fn()
+      .mockReturnValueOnce('Issue title')
+      .mockReturnValueOnce('assign1, assign2, assign3')
+      .mockReturnValueOnce('A larger string for the body of the issue.')
+      .mockReturnValueOnce('label1, label2, label3');
     core.setOutput = jest.fn().mockReturnValueOnce(true);
     process.env.GITHUB_TOKEN = 'NOT-A-TOKEN';
     await run();
